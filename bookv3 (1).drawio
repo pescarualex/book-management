@@ -1,0 +1,47 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="CKSrB0mwCvlWDiRG9XXg">
+    <mxGraphModel dx="1894" dy="1729" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-1" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="User&lt;div&gt;firstname&lt;/div&gt;&lt;div&gt;lastname&lt;br&gt;&lt;div&gt;email&lt;/div&gt;&lt;div&gt;address&lt;/div&gt;&lt;div&gt;birthDate&lt;/div&gt;&lt;div&gt;Set&amp;lt;Role&amp;gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="180" x="-310" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-2" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Book&lt;div&gt;title&lt;/div&gt;&lt;div&gt;isbn&lt;br&gt;Category&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="180" x="-100" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-3" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Author&lt;div&gt;firstname&lt;/div&gt;&lt;div&gt;lastname&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="-50" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-11" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Role enum&lt;div&gt;CLIENT&lt;/div&gt;&lt;div&gt;LIBRARIAN&lt;/div&gt;&lt;div&gt;ADMIN&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="-250" y="-30" as="geometry" />
+        </mxCell>
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-12" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Loan&lt;div&gt;id&lt;/div&gt;&lt;div&gt;User&lt;br&gt;BookCopy&lt;/div&gt;&lt;div&gt;borrowDate&lt;br&gt;dueDate&lt;br&gt;returnDate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="190" width="190" x="360" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-13" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="BookCopy&lt;div&gt;bookCopyId&lt;/div&gt;&lt;div&gt;Book&lt;/div&gt;&lt;div&gt;shelfLocation&lt;/div&gt;&lt;div&gt;Status&lt;/div&gt;&lt;div&gt;Condition&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="180" x="120" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-14" edge="1" parent="1" source="4unh6UG-8CEp1iKtYwKl-3" style="endArrow=none;dashed=1;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="4unh6UG-8CEp1iKtYwKl-2" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points" />
+            <mxPoint x="120" y="430" as="sourcePoint" />
+            <mxPoint x="170" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-15" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="M:M" vertex="1">
+          <mxGeometry height="30" width="60" x="-60" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-16" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Status&lt;div&gt;AVAILABLE, BORROWED, IN_REPAIR, LOST&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="170" y="-30" as="geometry" />
+        </mxCell>
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-17" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Condition&lt;div&gt;NEW, GOOD, DAMAGED&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="170" y="-150" as="geometry" />
+        </mxCell>
+        <mxCell id="4unh6UG-8CEp1iKtYwKl-18" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Category&lt;div&gt;categoryName&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="-50" y="-20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

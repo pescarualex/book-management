@@ -1,4 +1,12 @@
 package org.example.bookmanagement.dto;
 
-public class AuthorRequest {
+import jakarta.validation.constraints.NotNull;
+
+public record AuthorRequest(
+        @NotNull
+        String firstName,
+
+        @NotNull
+        String lastName
+) {
 }
