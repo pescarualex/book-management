@@ -1,21 +1,21 @@
-package org.example.bookmanagement.domain;
+package org.example.bookmanagement.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "author")
+@Table(name = "authors")
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
-    @NotNull
-    String firstName;
+    @Column(nullable = false)
+    private String firstName;
 
-    @NotNull
-    String lastName;
+    @Column(nullable = false)
+    private String lastName;
 
     public Author() {
     }
@@ -45,5 +45,14 @@ public class Author {
 
     public void setLastName(@NotNull String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

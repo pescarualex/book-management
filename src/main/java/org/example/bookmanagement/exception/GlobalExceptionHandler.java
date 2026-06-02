@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    public record Error(
+    public record ErrorResponse(
             LocalDateTime localDateTime,
             int statusCode,
             String error,
@@ -22,12 +22,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Error> handleConstrainsViolation(ConstraintViolationException e) {
-        Error error = new Error(
+    public ResponseEntity<ErrorResponse> handleConstraintsViolation(ConstraintViolationException e) {
+        String message = e.getConstraintViolations().stream()
+                .map(v -> v.getPropertyPath() + ": " + v.getMessage())
+                .collect(Collectors.joining("; "));
+
+        ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation error",
-                "Attributes cannot be null",
+                message,
                 null
         );
 
@@ -35,16 +39,16 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<Error> handleNoSuchElement(NoSuchElementException e) {
-        Error error = new Error(
+    @ExceptionHandler(AuthorNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoSuchElement(AuthorNotFoundException e) {
+        ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.NOT_FOUND.value(),
                 "No such element found",
-                "The object with that id does not exist",
+                e.getMessage(),
                 null
         );
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 }

@@ -1,9 +1,9 @@
 package org.example.bookmanagement.controller;
 
-import org.example.bookmanagement.domain.Author;
+import jakarta.validation.Valid;
 import org.example.bookmanagement.dto.AuthorRequest;
+import org.example.bookmanagement.dto.AuthorResponse;
 import org.example.bookmanagement.service.AuthorService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/authors")
 @Validated
 public class AuthorController {
 
@@ -21,37 +21,36 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    //on admin path, only the librarian will have access.
 
-    @PostMapping("/admin/author")
-    public ResponseEntity<Void> createAuthor(@RequestBody AuthorRequest authorRequest) {
+    @PostMapping()
+    public ResponseEntity<Void> createAuthor(@Valid @RequestBody AuthorRequest authorRequest) {
         authorService.createAuthor(authorRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/author/{id}")
-    public ResponseEntity<Author> getAuthor(@PathVariable long id) {
-        authorService.getAuthor(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    @GetMapping("/{id}")
+    public ResponseEntity<AuthorResponse> getAuthor(@PathVariable long id) {
+        AuthorResponse author = authorService.getAuthor(id);
+        return ResponseEntity.ok(author);
     }
 
-    @GetMapping("/author")
-    public ResponseEntity<List<Author>> getAllAuthors() {
-        authorService.getAllAuthors();
-        return ResponseEntity.status(HttpStatus.OK).build();
+    @GetMapping()
+    public ResponseEntity<List<AuthorResponse>> getAllAuthors() {
+        List<AuthorResponse> allAuthors = authorService.getAllAuthors();
+        return ResponseEntity.ok(allAuthors);
     }
 
-    @PutMapping("/admin/author/{id}")
-    public ResponseEntity<Void> updateAuthor(@PathVariable long id, @RequestBody AuthorRequest authorRequest) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updateAuthor(@PathVariable long id, @Valid @RequestBody AuthorRequest authorRequest) {
         authorService.updateAuthor(id, authorRequest);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok().build();
     }
 
 
-    @DeleteMapping("/admin/author/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuthor(@PathVariable long id) {
         authorService.deleteAuthor(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.noContent().build();
     }
 
 

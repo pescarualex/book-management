@@ -1,10 +1,13 @@
 package org.example.bookmanagement.service;
 
-import org.example.bookmanagement.domain.Author;
 import org.example.bookmanagement.dto.AuthorRequest;
+import org.example.bookmanagement.dto.AuthorResponse;
+import org.example.bookmanagement.entity.Author;
+import org.example.bookmanagement.exception.AuthorNotFoundException;
 import org.example.bookmanagement.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,16 +27,38 @@ public class AuthorService {
         authorRepository.save(author);
     }
 
-    public Author getAuthor(long id) {
-        return authorRepository.findById(id).orElseThrow();
+    public AuthorResponse getAuthor(long id) {
+        Author author = authorRepository.findById(id).orElseThrow(
+                () -> new AuthorNotFoundException(id)
+        );
+
+        return new AuthorResponse(
+                author.getId(),
+                author.getFirstName(),
+                author.getLastName()
+        );
     }
 
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
+    public List<AuthorResponse> getAllAuthors() {
+        List<Author> allAuthors = authorRepository.findAll();
+        List<AuthorResponse> authorsResponse = new ArrayList<>();
+
+        if (!allAuthors.isEmpty()) {
+            for (Author author : allAuthors) {
+                authorsResponse.add(
+                        new AuthorResponse(
+                                author.getId(),
+                                author.getFirstName(),
+                                author.getLastName()));
+            }
+        }
+        return authorsResponse;
     }
 
     public void updateAuthor(long id, AuthorRequest authorRequest) {
-        Author authorById = authorRepository.findById(id).orElseThrow();
+        Author authorById = authorRepository.findById(id).orElseThrow(
+                () -> new AuthorNotFoundException(id)
+        );
         authorById.setFirstName(authorRequest.firstName());
         authorById.setLastName(authorRequest.lastName());
 
@@ -41,6 +66,10 @@ public class AuthorService {
     }
 
     public void deleteAuthor(long id) {
+        if (!authorRepository.existsById(id)) {
+            throw new AuthorNotFoundException(id);
+        }
+
         authorRepository.deleteById(id);
     }
 
