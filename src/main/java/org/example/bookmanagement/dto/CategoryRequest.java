@@ -1,4 +1,9 @@
 package org.example.bookmanagement.dto;
 
-public class CategoryRequest {
+import jakarta.validation.constraints.NotNull;
+
+public record CategoryRequest (
+        @NotNull
+        String categoryName
+) {
 }
