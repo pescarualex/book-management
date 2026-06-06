@@ -21,10 +21,7 @@ public class AuthorService {
 
     public void createAuthor(AuthorRequest authorRequest) {
         Author author = new Author();
-        author.setFirstName(authorRequest.firstName());
-        author.setLastName(authorRequest.lastName());
-
-        authorRepository.save(author);
+        mapAuthorRequest(authorRequest, author);
     }
 
     public AuthorResponse getAuthor(long id) {
@@ -59,10 +56,7 @@ public class AuthorService {
         Author authorById = authorRepository.findById(id).orElseThrow(
                 () -> new AuthorNotFoundException(id)
         );
-        authorById.setFirstName(authorRequest.firstName());
-        authorById.setLastName(authorRequest.lastName());
-
-        authorRepository.save(authorById);
+        mapAuthorRequest(authorRequest, authorById);
     }
 
     public void deleteAuthor(long id) {
@@ -71,6 +65,14 @@ public class AuthorService {
         }
 
         authorRepository.deleteById(id);
+    }
+
+
+    private void mapAuthorRequest(AuthorRequest authorRequest, Author author) {
+        author.setFirstName(authorRequest.firstName());
+        author.setLastName(authorRequest.lastName());
+
+        authorRepository.save(author);
     }
 
 }
