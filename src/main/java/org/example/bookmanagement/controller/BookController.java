@@ -4,13 +4,13 @@ import jakarta.validation.Valid;
 import org.example.bookmanagement.dto.BookRequest;
 import org.example.bookmanagement.dto.BookResponse;
 import org.example.bookmanagement.service.BookService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/books")
 public class BookController {
 
@@ -23,7 +23,7 @@ public class BookController {
     @PostMapping
     public ResponseEntity<Void> createBook(@Valid @RequestBody BookRequest bookRequest) {
         bookService.createBook(bookRequest);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{id}")
@@ -38,7 +38,7 @@ public class BookController {
         return ResponseEntity.ok(allBooks);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<BookResponse> updateBook(@PathVariable long id, @Valid @RequestBody BookRequest bookRequest) {
         BookResponse bookResponse = bookService.updateBook(id, bookRequest);
         return ResponseEntity.ok(bookResponse);

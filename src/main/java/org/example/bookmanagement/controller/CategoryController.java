@@ -5,13 +5,12 @@ import org.example.bookmanagement.dto.CategoryRequest;
 import org.example.bookmanagement.dto.CategoryResponse;
 import org.example.bookmanagement.service.CategoryService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/v1/category")
+@RestController
+@RequestMapping("/api/v1/categories")
 public class CategoryController {
 
     private final CategoryService categoryService;

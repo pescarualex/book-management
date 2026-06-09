@@ -40,7 +40,7 @@ public class AuthorController {
         return ResponseEntity.ok(allAuthors);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> updateAuthor(@PathVariable long id, @Valid @RequestBody AuthorRequest authorRequest) {
         authorService.updateAuthor(id, authorRequest);
         return ResponseEntity.ok().build();

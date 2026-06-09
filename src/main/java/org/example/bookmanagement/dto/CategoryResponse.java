@@ -1,6 +1,6 @@
 package org.example.bookmanagement.dto;
 
-public record CategoryResponse (
+public record CategoryResponse(
         long id,
         String categoryName
 ) {

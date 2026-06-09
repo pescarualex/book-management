@@ -1,7 +1,6 @@
 package org.example.bookmanagement.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "authors")
@@ -9,7 +8,7 @@ public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String firstName;
@@ -20,7 +19,7 @@ public class Author {
     public Author() {
     }
 
-    public Author(@NotNull String firstName, @NotNull String lastName) {
+    public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -29,21 +28,19 @@ public class Author {
         return id;
     }
 
-    @NotNull
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(@NotNull String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    @NotNull
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(@NotNull String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 

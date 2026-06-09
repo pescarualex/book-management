@@ -11,7 +11,6 @@ import org.example.bookmanagement.exception.BookNotFoundException;
 import org.example.bookmanagement.repository.AuthorRepository;
 import org.example.bookmanagement.repository.BookRepository;
 import org.example.bookmanagement.repository.CategoryRepository;
-import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,7 +35,9 @@ public class BookService {
     public void createBook(BookRequest bookRequest) {
         Book book = new Book();
 
-        mapToBookRequest(bookRequest, book);
+        mapBookToBookRequest(bookRequest, book);
+
+        bookRepository.save(book);
     }
 
     public BookResponse getBookById(long id) {
@@ -68,7 +69,9 @@ public class BookService {
                 () -> new BookNotFoundException(id)
         );
 
-        mapToBookRequest(bookRequest, book);
+        mapBookToBookRequest(bookRequest, book);
+
+        bookRepository.save(book);
 
         return getBookResponse(book);
     }
@@ -81,27 +84,26 @@ public class BookService {
     }
 
 
-    private void mapToBookRequest(BookRequest bookRequest, Book book) {
+    private void mapBookToBookRequest(BookRequest bookRequest, Book book) {
         book.setTitle(bookRequest.title());
         book.setIsbn(bookRequest.isbn());
 
-        Set<Author> allAuthorsById = new HashSet<>(authorRepository.findAllById(bookRequest.authorId()));
-        Set<Category> allCategoriesById = new HashSet<>(categoryRepository.findAllById(bookRequest.categoryId()));
+        Set<Author> allAuthorsById = new HashSet<>(authorRepository.findAllById(bookRequest.authorIds()));
+        Set<Category> allCategoriesById = new HashSet<>(categoryRepository.findAllById(bookRequest.categoryIds()));
 
         book.setCategories(allCategoriesById);
         book.setAuthors(allAuthorsById);
 
-        bookRepository.save(book);
     }
 
-    private CategoryResponse mapToCategoryResponse(Category category) {
+    private CategoryResponse mapCategoryToCategoryResponse(Category category) {
         return new CategoryResponse(
                 category.getId(),
                 category.getCategoryName()
         );
     }
 
-    private AuthorResponse mapToAuthorResponse(Author author) {
+    private AuthorResponse mapAuthorToAuthorResponse(Author author) {
         return new AuthorResponse(
                 author.getId(),
                 author.getFirstName(),
@@ -109,16 +111,15 @@ public class BookService {
         );
     }
 
-    @NonNull
     private BookResponse getBookResponse(Book book) {
         Set<CategoryResponse> categoryResponses = book.getCategories()
                 .stream()
-                .map(this::mapToCategoryResponse)
+                .map(this::mapCategoryToCategoryResponse)
                 .collect(Collectors.toSet());
 
         Set<AuthorResponse> authorResponses = book.getAuthors()
                 .stream()
-                .map(this::mapToAuthorResponse)
+                .map(this::mapAuthorToAuthorResponse)
                 .collect(Collectors.toSet());
 
         return new BookResponse(

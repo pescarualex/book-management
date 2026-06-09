@@ -35,21 +35,11 @@ public class CategoryService {
     }
 
     public List<CategoryResponse> getAllCategories() {
-        List<Category> allCategories = categoryRepository.findAll();
-        List<CategoryResponse> allCategoriesResponse = new ArrayList<>();
-
-        if (!allCategories.isEmpty()) {
-            for (Category category : allCategories) {
-                allCategoriesResponse.add(
-                        new CategoryResponse(
-                                category.getId(),
-                                category.getCategoryName()
-                        )
-                );
-            }
-        }
-
-        return allCategoriesResponse;
+        return categoryRepository.findAll().stream()
+                .map(c -> new CategoryResponse(
+                        c.getId(),
+                        c.getCategoryName()))
+                .toList();
     }
 
     public void updateCategory(long id, CategoryRequest categoryRequest) {

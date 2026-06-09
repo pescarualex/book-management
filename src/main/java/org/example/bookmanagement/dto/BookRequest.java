@@ -1,11 +1,14 @@
 package org.example.bookmanagement.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.Set;
 
 public record BookRequest(
-        String title,
-        String isbn,
-        Set<Long> categoryId,
-        Set<Long> authorId
+        @NotBlank String title,
+        @NotBlank String isbn,
+        @NotEmpty Set<Long> categoryIds,
+        @NotEmpty Set<Long> authorIds
 ) {
 }

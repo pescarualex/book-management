@@ -1,9 +1,9 @@
 package org.example.bookmanagement.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
-public record CategoryRequest (
-        @NotNull
+public record CategoryRequest(
+        @NotBlank
         String categoryName
 ) {
 }
