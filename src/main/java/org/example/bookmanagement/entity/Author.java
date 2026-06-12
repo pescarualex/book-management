@@ -16,15 +16,7 @@ public class Author {
     @Column(nullable = false)
     private String lastName;
 
-    public Author() {
-    }
-
-    public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

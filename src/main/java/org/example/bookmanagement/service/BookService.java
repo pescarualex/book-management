@@ -7,13 +7,14 @@ import org.example.bookmanagement.dto.CategoryResponse;
 import org.example.bookmanagement.entity.Author;
 import org.example.bookmanagement.entity.Book;
 import org.example.bookmanagement.entity.Category;
+import org.example.bookmanagement.exception.AuthorNotFoundException;
 import org.example.bookmanagement.exception.BookNotFoundException;
+import org.example.bookmanagement.exception.CategoryNotFoundException;
 import org.example.bookmanagement.repository.AuthorRepository;
 import org.example.bookmanagement.repository.BookRepository;
 import org.example.bookmanagement.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,9 @@ public class BookService {
     private final AuthorRepository authorRepository;
     private final CategoryRepository categoryRepository;
 
-    public BookService(BookRepository bookRepository, CategoryRepository categoryRepository, AuthorRepository authorRepository) {
+    public BookService(BookRepository bookRepository,
+                       CategoryRepository categoryRepository,
+                       AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
@@ -51,17 +54,9 @@ public class BookService {
     }
 
     public List<BookResponse> getAllBooks() {
-        List<Book> allBooks = bookRepository.findAllBooksWithCategoriesAndAuthors();
-        List<BookResponse> allBooksResponse = new ArrayList<>();
-
-        if (!allBooks.isEmpty()) {
-            for (Book book : allBooks) {
-                BookResponse bookResponse = getBookResponse(book);
-                allBooksResponse.add(bookResponse);
-            }
-        }
-
-        return allBooksResponse;
+        return bookRepository.findAllBooksWithCategoriesAndAuthors().stream()
+                .map(this::getBookResponse)
+                .toList();
     }
 
     public BookResponse updateBook(long id, BookRequest bookRequest) {
@@ -85,15 +80,24 @@ public class BookService {
 
 
     private void mapBookToBookRequest(BookRequest bookRequest, Book book) {
+        Set<Author> allAuthorsById = new HashSet<>(authorRepository.findAllById(bookRequest.authorIds()));
+        for (Author author : allAuthorsById) {
+            if(!authorRepository.existsById(author.getId())) {
+                throw new AuthorNotFoundException(author.getId());
+            }
+        }
+
+        Set<Category> allCategoriesById = new HashSet<>(categoryRepository.findAllById(bookRequest.categoryIds()));
+        for (Category category : allCategoriesById) {
+            if(!categoryRepository.existsById(category.getId())) {
+                throw new CategoryNotFoundException(category.getId());
+            }
+        }
+
         book.setTitle(bookRequest.title());
         book.setIsbn(bookRequest.isbn());
-
-        Set<Author> allAuthorsById = new HashSet<>(authorRepository.findAllById(bookRequest.authorIds()));
-        Set<Category> allCategoriesById = new HashSet<>(categoryRepository.findAllById(bookRequest.categoryIds()));
-
         book.setCategories(allCategoriesById);
         book.setAuthors(allAuthorsById);
-
     }
 
     private CategoryResponse mapCategoryToCategoryResponse(Category category) {

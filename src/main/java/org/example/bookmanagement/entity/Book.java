@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "book")
+@Table(name = "books")
 public class Book {
 
     @Id
@@ -21,19 +21,19 @@ public class Book {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "book_category",
-            joinColumns = @JoinColumn(name = "bookId"),
-            inverseJoinColumns = @JoinColumn(name = "categoryId"))
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "book_author",
-            joinColumns = @JoinColumn(name = "bookId"),
-            inverseJoinColumns = @JoinColumn(name = "authorId")
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private Set<Author> authors;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -76,8 +76,6 @@ public class Book {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", isbn='" + isbn + '\'' +
-                ", category=" + categories +
-                ", author=" + authors +
                 '}';
     }
 }

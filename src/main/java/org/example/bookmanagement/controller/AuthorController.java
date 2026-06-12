@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.example.bookmanagement.dto.AuthorRequest;
 import org.example.bookmanagement.dto.AuthorResponse;
 import org.example.bookmanagement.service.AuthorService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class AuthorController {
     @PostMapping()
     public ResponseEntity<Void> createAuthor(@Valid @RequestBody AuthorRequest authorRequest) {
         authorService.createAuthor(authorRequest);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{id}")

@@ -3,7 +3,7 @@ package org.example.bookmanagement.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
 public class Category {
 
     @Id
@@ -13,7 +13,7 @@ public class Category {
     @Column(nullable = false)
     private String categoryName;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
