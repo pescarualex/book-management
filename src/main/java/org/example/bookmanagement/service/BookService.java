@@ -80,24 +80,26 @@ public class BookService {
 
 
     private void mapBookToBookRequest(BookRequest bookRequest, Book book) {
-        Set<Author> allAuthorsById = new HashSet<>(authorRepository.findAllById(bookRequest.authorIds()));
-        for (Author author : allAuthorsById) {
-            if(!authorRepository.existsById(author.getId())) {
-                throw new AuthorNotFoundException(author.getId());
-            }
+        Set<Author> allAuthorsByIdFound = new HashSet<>(authorRepository.findAllById(bookRequest.authorIds()));
+        if(allAuthorsByIdFound.size() != bookRequest.authorIds().size()) {
+            Set<Long> foundIds = allAuthorsByIdFound.stream().map(Author::getId).collect(Collectors.toSet());
+            Set<Long> missingIds = new HashSet<>(bookRequest.authorIds());
+            missingIds.removeAll(foundIds);
+            throw new AuthorNotFoundException(missingIds.iterator().next());
         }
 
-        Set<Category> allCategoriesById = new HashSet<>(categoryRepository.findAllById(bookRequest.categoryIds()));
-        for (Category category : allCategoriesById) {
-            if(!categoryRepository.existsById(category.getId())) {
-                throw new CategoryNotFoundException(category.getId());
-            }
+        Set<Category> allCategoriesByIdFound = new HashSet<>(categoryRepository.findAllById(bookRequest.categoryIds()));
+        if(allCategoriesByIdFound.size() != bookRequest.categoryIds().size()) {
+            Set<Long> foundIds = allCategoriesByIdFound.stream().map(Category::getId).collect(Collectors.toSet());
+            Set<Long> missingIds = new HashSet<>(bookRequest.categoryIds());
+            missingIds.removeAll(foundIds);
+            throw new CategoryNotFoundException(missingIds.iterator().next());
         }
 
         book.setTitle(bookRequest.title());
         book.setIsbn(bookRequest.isbn());
-        book.setCategories(allCategoriesById);
-        book.setAuthors(allAuthorsById);
+        book.setCategories(allCategoriesByIdFound);
+        book.setAuthors(allAuthorsByIdFound);
     }
 
     private CategoryResponse mapCategoryToCategoryResponse(Category category) {
